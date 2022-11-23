@@ -139,11 +139,27 @@ int nearest_cell(cell cells[27], double x, double y, double z){
   return nearest;
 }
 
+void update_nearest_cell(int ximax, int etamax, int zetamax, cell *grid, int *xi, int *eta, int *zeta) {
+
+  if (xi==0) {
+
+  } else if (xi==ximax-1) {
+
+  } else {
+    
+  }
+
+}
+
 void create_z_slice(int ximax, int etamax, int zetamax, cell *grid, double xmax, double ymax, int w, int h, pixel *img, double z) {
 
   double x,y;
-  double xscale = (xmax-xmin)/w;
-  double yscale = (ymax-ymin)/h;
+  double xrange = xmax-xmin;
+  double yrange = ymax-ymin;
+  if (xrange > yrange) yrange = xrange;
+  else xrange = yrange;
+  double xscale = (xrange)/w;
+  double yscale = (yrange)/h;
 
   double last_start_xi;
   double last_start_eta;
@@ -153,16 +169,35 @@ void create_z_slice(int ximax, int etamax, int zetamax, cell *grid, double xmax,
   double dx = grid[0].x-xmin;
   double dy = grid[0].y-ymin;
   double dz = grid[0].z-z;
-  double near_dist = dx*dx+dy*dy+dz*dz;
-  
+  double dist = dx*dx+dy*dy+dz*dz
+  double near_dist = dist;
+  int nearest_xi = 0;
+  int nearest_eta = 0;
+  int nearest_zeta = 0;
+
+  cell this_cell;
+
   for (int xi = 0; xi < ximax; xi++){
     for (int eta = 0; eta < etamax; eta++){
       for (int zeta = 0; zeta < zetamax; zeta++){
-
+        this_cell = grid[xi*eteamax*zetamax + eta*zetamax + zeta];
+        dx = this_cell.x-xmin;
+        dy = this_cell.y-ymin;
+        dz = this_cell.z-z;
+        dist = dx*dx+dy*dy+dz*dz;
+        if (dist < near_dist) {
+          near_dist = dist;
+          nearest_xi = xi;
+          nearest_eta = eta;
+          nearest_zeta = zeta;
+        }
       }
     }
   }
 
+  last_start_xi = nearest_xi;
+  last_start_eta = nearest_eta;
+  last_start_zeta = nearest_zeta;
   for (int i = 0; i < w; x++) {
     bool started_row = false;
     for (int j = 0; j < h; y++) {
