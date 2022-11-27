@@ -70,11 +70,11 @@ int write_grid(int x, int y, int z, coord3d *grid, char boundary_type)
 int main(int argc, char **argv) //inputs follow format: "radius, height" with both dimensions in thou
 {
 
-  double id = str2int(argv[1])/1000.0d;
-  double ir = id/2.0d;
-  double od = str2int(argv[2])/1000.0d;
-  double or_ = od/2.0d;
-  double height = str2int(argv[3])/1000.0d;
+  double id = str2int(argv[1])/1000.0;
+  double ir = id/2.0;
+  double od = str2int(argv[2])/1000.0;
+  double or_ = od/2.0;
+  double height = str2int(argv[3])/1000.0;
   int cpoints = str2int(argv[4]);//number of points in the circle
   int rpoints = str2int(argv[5]);
   int hpoints = str2int(argv[6]);//number of points vertically
@@ -84,7 +84,7 @@ int main(int argc, char **argv) //inputs follow format: "radius, height" with bo
     << "\nrpoints: " << rpoints << "\n";
 
   coord3d cylinder_grid[hpoints][rpoints][cpoints];
-  double dtheta = 2.0d * PI / cpoints;
+  double dtheta = 2.0 * PI / cpoints;
   double dr = (or_-ir)/rpoints;
   double startr = ir + dr/2;
   double dh = height/hpoints;
